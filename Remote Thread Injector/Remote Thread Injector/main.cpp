@@ -38,11 +38,11 @@ typedef struct _RemoteParam {
 	DWORD dwExitProcess;
 } RemoteParam, * PRemoteParam;
 
-typedef HWND(__stdcall* PFN_GETCONSOLEWINDOW)(void);
+//typedef HWND(__stdcall* PFN_GETCONSOLEWINDOW)(void);
 
 typedef void(__stdcall* PFN_SLEEP)(DWORD);
 
-typedef short(__stdcall* PFN_GETKEYSTATE)(int);
+//typedef short(__stdcall* PFN_GETKEYSTATE)(int);
 
 typedef int(__stdcall* PFN_PRINTF)(const char *, ...);
 
