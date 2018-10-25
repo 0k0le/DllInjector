@@ -1,0 +1,22 @@
+﻿Build started 10/23/2018 4:23:11 PM.
+     1>Project "C:\Projects\DLL Injector With Custom File Correction\DLL Injector With Custom File Correction\DLL Injector With Custom File Correction.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(130): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(155): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(165): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(194): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(195): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(234): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(374): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\pfcore.h(490): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\projects\dll injector with custom file correction\dll injector with custom file correction\main.cpp(212): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Projects\DLL Injector With Custom File Correction\Debug\DLLInjectorDebug.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Projects\DLL Injector With Custom File Correction\Debug\DLLInjectorDebug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Projects\DLL Injector With Custom File Correction\Debug\DLLInjectorDebug.lib" /MACHINE:X86 Debug\main.obj
+         DLL Injector With Custom File Correction.vcxproj -> C:\Projects\DLL Injector With Custom File Correction\Debug\DLLInjectorDebug.exe
+     1>Done Building Project "C:\Projects\DLL Injector With Custom File Correction\DLL Injector With Custom File Correction\DLL Injector With Custom File Correction.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.65
