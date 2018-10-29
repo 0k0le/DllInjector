@@ -199,7 +199,7 @@ bool InjectDll(DWORD *processId) {
 
 	printf("%s Captured HANDLE on %s:%d\n", tName, prgName, *processId);
 
-	memAddress = VirtualAllocEx(hProc, NULL, strlen(dllPath) + 1, MEM_COMMIT, PAGE_READWRITE);
+	memAddress = VirtualAllocEx(hProc, NULL, strlen(dllPath) + 1, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	memAddressRef = reinterpret_cast<DWORD>(memAddress);
 
 	if(!memAddress) {

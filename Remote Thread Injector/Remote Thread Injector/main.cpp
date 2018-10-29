@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) {
 	RemoteParam *memStruct = (RemoteParam *)VirtualAllocEx(hProc, 0, sizeof(RemoteParam *), MEM_COMMIT, PAGE_READWRITE);
 	WriteProcessMemory(hProc, memStruct, &tParam, sizeof(tParam), NULL);
 
-	VirtualProtect(memAddress, sizeof(RemoteParam *), PAGE_READWRITE, NULL);
+	//VirtualProtect(memAddress, sizeof(RemoteParam *), PAGE_READWRITE, NULL);
 
 	CreateRemoteThread(hProc, 0, 0, (LPTHREAD_START_ROUTINE)memAddress, memStruct, 0, &dwWriteBytes);
 
@@ -221,8 +221,8 @@ int main(int argc, char *argv[]) {
 	FreeLibrary(hK32);
 	FreeLibrary(hU32);
 
-	VirtualFree(memAddress, dwThreadSize, MEM_DECOMMIT);
-	VirtualFree(memStruct, sizeof(RemoteParam *), MEM_DECOMMIT);
+	//VirtualFree(memAddress, dwThreadSize, MEM_DECOMMIT);
+	//VirtualFree(memStruct, sizeof(RemoteParam *), MEM_DECOMMIT);
 
 	Pause("Press Any Key To Exit...");
 
