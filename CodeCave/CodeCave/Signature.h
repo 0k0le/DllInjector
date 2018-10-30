@@ -20,7 +20,7 @@
 #include <TlHelp32.h>
 #include <Psapi.h>
 
-// Create Struct For Thread
+// Create Struct For Threads
 typedef struct _THREADDATAMSG {
 	char szMsg[64];
 }ThreadDataMsg, *lpThreadDataMsg;

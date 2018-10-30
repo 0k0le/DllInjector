@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="asmfunc.h" />
     <ClInclude Include="Signature.h" />
+    <ClInclude Include="Threadfuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

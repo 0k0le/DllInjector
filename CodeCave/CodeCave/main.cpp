@@ -18,6 +18,7 @@
 
 #include "Signature.h"
 #include "asmfunc.h"
+#include "Threadfuncs.h"
 
 
 void DllProcess() {
@@ -29,48 +30,30 @@ void DllProcess() {
 		"xx?xx?xx?xx",
 		"\x89\x4e\x00\xd9\x46\x00\xd8\x66\x00\x8b\xc6");
 
+	DWORD dwHealthAddress = FindAddress("ac_client.exe",
+		"xx????xx?xx",
+		"\x8b\x86\x00\x00\x00\x00\x83\xc4\x00\x50\x68");
+
+	DWORD dwAmmoConstAddress = FindAddress("ac_client.exe",
+		"xxxxx??x????x",
+		"\x8b\x02\x50\x8d\x4c\x00\x00\x68\x00\x00\x00\x00\x51");
+
 	dwAddressAxis -= 3;
 
 	MessageBoxAddress(dwAddress, false);
 	MessageBoxAddress(dwAddressAxis, false);
+	MessageBoxAddress(dwHealthAddress, false);
+	MessageBoxAddress(dwAmmoConstAddress, false);
 
 	dwAmmoJmpBack = dwAddress + 0x7;
 	dwAxisJmpBack = dwAddressAxis + 0x6;
+	dwHealthJmpBack = dwHealthAddress + 0x6;
+	dwAmmoConstJmpBack = dwAmmoConstAddress + 0x7;
 
 	WriteMemoryJmp((BYTE*)dwAddress, (DWORD)InfiniteAmmo, 7);
 	WriteMemoryJmp((BYTE*)dwAddressAxis, (DWORD)FlyHack, 6);
-}
-
-unsigned int __stdcall FlyHackThread(LPVOID arg) {
-	MessageBox(NULL, "Press Ok To Enable Flying!", "codecave.dll", MB_OK);
-	bool bStay = false;
-	float fYAxis = NULL;
-
-	while(true) {
-		Sleep(75);
-
-		dwAxisPtr = dwAxisRegister + 0x3C;
-
-		if(bStay) {
-			*(float *)dwAxisPtr = fYAxis;
-		}
-
-		if(GetAsyncKeyState(VK_SPACE)) {
-			*(float *)dwAxisPtr += 15.0f;
-			fYAxis = *(float *)dwAxisPtr;
-		}
-
-		if(GetAsyncKeyState(VK_CONTROL)) {
-			if(bStay) {
-				bStay = false;
-			} else {
-				fYAxis = *(float *)dwAxisPtr;
-				bStay = true;
-			}
-		}
-	}
-
-	return 0;
+	WriteMemoryJmp((BYTE*)dwHealthAddress, (DWORD)HealthHack, 6);
+	WriteMemoryJmp((BYTE*)dwAmmoConstAddress, (DWORD)AmmoAddressHack, 7);
 }
 
 bool __stdcall DllMain(HINSTANCE hInstance,
@@ -82,6 +65,8 @@ bool __stdcall DllMain(HINSTANCE hInstance,
 		DisableThreadLibraryCalls(hInstance);
 		DllProcess();
 		_beginthreadex(0, 0, &FlyHackThread, 0, 0, 0);
+		_beginthreadex(0, 0, &HealthHackThread, 0, 0, 0);
+		_beginthreadex(0, 0, &AmmoHackThread, 0, 0, 0);
 		break;
 	}
 
