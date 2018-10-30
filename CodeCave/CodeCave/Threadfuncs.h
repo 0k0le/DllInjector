@@ -1,3 +1,14 @@
+/*
+* Project: CodeCave
+* File: Threadfuncs.h
+*
+* Author: Matthew Todd Geiger
+* 
+* Time: 03:19
+*
+* Brief: This file contains the threads launched after code injection is complete
+*/
+
 #ifndef THREADFUNCS_H_
 #define THREADFUNCS_H_
 
@@ -6,6 +17,7 @@
 
 #include "asmfunc.h"
 
+// Manages Jump/Fly
 unsigned int __stdcall FlyHackThread(LPVOID arg) {
 	bool bStay = false;
 	bool bSwitch = false;
@@ -26,21 +38,17 @@ unsigned int __stdcall FlyHackThread(LPVOID arg) {
 				*(float *)dwAxisPtr = fYAxis;
 			}
 
-			if(GetAsyncKeyState(VK_SPACE)) {
-				for(float i = 0.0f; i < 13.0f; i += 0.25f) {
-					Sleep(5);
-					*(float *)dwAxisPtr += 0.25f;
+			if(GetAsyncKeyState(VK_SPACE) << 15) {
+				for(float i = 0.0f; i < 13.0f; i += 0.10f) {
+					Sleep(2);
+					*(float *)dwAxisPtr += 0.10f;
 					fYAxis = *(float *)dwAxisPtr;
 				}
 			}
 
-			if(GetAsyncKeyState(VK_CONTROL)) {
-				if(bStay) {
-					bStay = false;
-				} else {
-					fYAxis = *(float *)dwAxisPtr;
-					bStay = true;
-				}
+			if(GetAsyncKeyState(VK_CONTROL) << 15) {
+				bStay = !bStay;
+				fYAxis = *(float *)dwAxisPtr;
 			}
 		}
 	}
@@ -48,6 +56,7 @@ unsigned int __stdcall FlyHackThread(LPVOID arg) {
 	return 0;
 }
 
+// Manages Unlimited ammo state
 unsigned int __stdcall AmmoHackThread(LPVOID arg) {
 
 	while(true) {
@@ -62,6 +71,7 @@ unsigned int __stdcall AmmoHackThread(LPVOID arg) {
 	return 0;
 }
 
+// Manages Health Hack
 unsigned int __stdcall HealthHackThread(LPVOID arg) {
 	bool bSwitch = false;
 	bool bPress = false;

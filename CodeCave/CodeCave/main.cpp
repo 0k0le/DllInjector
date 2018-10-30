@@ -22,6 +22,7 @@
 
 
 void DllProcess() {
+	// Find memory addresses
 	DWORD dwAddress = FindAddress("ac_client.exe",
 		"xxxxx??xx??x????xxx?xxxxx??xxxxxxxxxxxxx",
 		"\xff\x0e\x57\x8b\x7c\x00\x00\x8d\x74\x00\x00\xe8\x00\x00\x00\x00\x5f\x5e\xb0\x00\x5b\x8b\xe5\x5d\xc2\x00\x00\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\x55");
@@ -45,6 +46,7 @@ void DllProcess() {
 	MessageBoxAddress(dwHealthAddress, false);
 	MessageBoxAddress(dwAmmoConstAddress, false);
 
+	// JMP addresses after injected assembler
 	dwAmmoJmpBack = dwAddress + 0x7;
 	dwAxisJmpBack = dwAddressAxis + 0x6;
 	dwHealthJmpBack = dwHealthAddress + 0x6;
@@ -64,6 +66,8 @@ bool __stdcall DllMain(HINSTANCE hInstance,
 	case DLL_PROCESS_ATTACH:
 		DisableThreadLibraryCalls(hInstance);
 		DllProcess();
+
+		// Launch controller threads
 		_beginthreadex(0, 0, &FlyHackThread, 0, 0, 0);
 		_beginthreadex(0, 0, &HealthHackThread, 0, 0, 0);
 		_beginthreadex(0, 0, &AmmoHackThread, 0, 0, 0);

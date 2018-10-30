@@ -45,6 +45,7 @@ __declspec( naked ) void InfiniteAmmo() {
 
 }
 
+// Assembler code used to check ammo status
 __declspec( naked ) void AmmoAddressHack() {
 
 	__asm
@@ -66,6 +67,7 @@ __declspec( naked ) void AmmoAddressHack() {
 
 }
 
+// Assembler code to find Y axis info
 __declspec( naked ) void FlyHack() {
 
 	__asm
@@ -79,6 +81,7 @@ __declspec( naked ) void FlyHack() {
 
 }
 
+// Assembler code to get health info
 __declspec( naked ) void HealthHack() {
 
 
@@ -92,10 +95,3 @@ __declspec( naked ) void HealthHack() {
 }
 
 #endif
-
-/*
-* 1. Increases ammo
-* 2. Code was overwritten by jmp instruction
-* 3. Code was overwritten by jmp instruction
-* 4. Return back to original code
-*/
