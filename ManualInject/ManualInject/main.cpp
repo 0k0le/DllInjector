@@ -3,18 +3,22 @@
 char szDll[] = "C:\\HACKS\\codecave.dll";
 char szExe[] = "ac_client.exe";
 
+// Grabs Process ID(using global data)
 DWORD GetProcessId() {
 	HANDLE			hTargetProcess	= NULL;
 	PROCESSENTRY32	pEntry32		= { sizeof(PROCESSENTRY32) };
 	DWORD			dwProcessID		= NULL;
 
 	while (!dwProcessID) {
+		// Access all running processes
 		hTargetProcess = CreateToolhelp32Snapshot(PROCESS_ALL_ACCESS, 0);
 
 		if (Process32First(hTargetProcess, &pEntry32)) {
 
+			// Iterate through process list
 			do {
 
+				// Check if process names match global variable
 				if (!strcmp(pEntry32.szExeFile, szExe)) {
 					dwProcessID = pEntry32.th32ProcessID;
 					break;
@@ -44,6 +48,7 @@ int wmain(int argc,wchar_t* argv[])
 	TOKEN_PRIVILEGES	tp;
 	MANUAL_INJECT		ManualInject;
 
+	// Adjust Debugging Privs..
 	if(OpenProcessToken((HANDLE)-1, TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY, &hToken))
 	{
 		tp.PrivilegeCount = 1;
@@ -77,7 +82,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
-	// Read the DLL
+	// Read the DLL to local memory
 
 	if(!ReadFile(hFile, buffer, FileSize, &read, NULL))
 	{
@@ -91,6 +96,7 @@ int wmain(int argc,wchar_t* argv[])
 
 	CloseHandle(hFile);
 
+	// Access DOS HEADER and check if it's a valid MZ executable(Valid windows executable)
 	pIDH = (PIMAGE_DOS_HEADER)buffer;
 
 	if(pIDH->e_magic != IMAGE_DOS_SIGNATURE)
@@ -101,6 +107,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
+	// Access NT HEADERS and check for valid NT signature and DLL Signature
 	pINH = (PIMAGE_NT_HEADERS)((LPBYTE)buffer + pIDH->e_lfanew);
 
 	if(pINH->Signature != IMAGE_NT_SIGNATURE)
@@ -119,6 +126,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
+	// Open target process HANDLE
 	ProcessId = GetProcessId();
 
 	printf("\nOpening target process.\n");
@@ -134,6 +142,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
+	// Allocate space in target for DLL
 	printf("\nAllocating memory for the DLL.\n");
 	image = VirtualAllocEx(hProcess, NULL, pINH->OptionalHeader.SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE); // Allocate memory for the DLL in target
 
@@ -162,6 +171,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
+	// Copy sections table to memory
 	pISH = (PIMAGE_SECTION_HEADER)(pINH + 1);
 
 	printf("\nCopying sections to target process.\n");
@@ -171,6 +181,7 @@ int wmain(int argc,wchar_t* argv[])
 		WriteProcessMemory(hProcess, (PVOID)((LPBYTE)image + pISH[i].VirtualAddress), (PVOID)((LPBYTE)buffer + pISH[i].PointerToRawData), pISH[i].SizeOfRawData, NULL);
 	}
 
+	// Allocate space for shell code
 	printf("\nAllocating memory for the loader code.\n");
 	mem = VirtualAllocEx(hProcess, NULL, 4096, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE); // Allocate memory for the loader code
 
@@ -216,6 +227,7 @@ int wmain(int argc,wchar_t* argv[])
 		return -1;
 	}
 
+	// Wait for shell code to finish
 	WaitForSingleObject(hThread, INFINITE);
 	GetExitCodeThread(hThread, &ExitCode);
 
@@ -243,6 +255,7 @@ int wmain(int argc,wchar_t* argv[])
 		printf("\nDLL entry point: %#x\n", (PVOID)((LPBYTE)image + pINH->OptionalHeader.AddressOfEntryPoint));
 	}
 
+	// Clean Up
 	VirtualFree(buffer, 0, MEM_RELEASE);
 	return 0;
 }
